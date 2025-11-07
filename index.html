@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Call Assistant - Broadband Business</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-headset"></i>
+                    <h1>AI Call Assistant</h1>
+                    <span class="subtitle">Broadband Business</span>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openAIAssistant()">
+                        <i class="fas fa-robot"></i>
+                        AI Assistant
+                    </button>
+                    <div class="user-info">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-content">
+                <button class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </button>
+                <button class="nav-item" data-section="calls">
+                    <i class="fas fa-phone"></i>
+                    Call Management
+                </button>
+                <button class="nav-item" data-section="customers">
+                    <i class="fas fa-users"></i>
+                    Customers
+                </button>
+                <button class="nav-item" data-section="tasks">
+                    <i class="fas fa-tasks"></i>
+                    Tasks
+                </button>
+                <button class="nav-item" data-section="ai">
+                    <i class="fas fa-robot"></i>
+                    AI Assistant
+                </button>
+                <button class="nav-item" data-section="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    Reports
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <h2>Dashboard</h2>
+                
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-calls">156</h3>
+                            <p>Total Calls Today</p>
+                            <span class="stat-trend up">+12% from yesterday</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="pending-tasks">23</h3>
+                            <p>Pending Tasks</p>
+                            <span class="stat-trend up">+5 new today</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="active-customers">1,247</h3>
+                            <p>Active Customers</p>
+                            <span class="stat-trend up">+18 this month</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="avg-response">4.2m</h3>
+                            <p>Avg Response Time</p>
+                            <span class="stat-trend down">-30s improvement</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="content-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Calls</h3>
+                            <button class="btn btn-sm btn-outline" onclick="showSection('calls')">View All</button>
+                        </div>
+                        <div class="card-content">
+                            <div class="activity-list" id="recent-calls">
+                                <!-- Recent calls will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Active Tasks</h3>
+                            <button class="btn btn-sm btn-outline" onclick="showSection('tasks')">View All</button>
+                        </div>
+                        <div class="card-content">
+                            <div class="activity-list" id="active-tasks">
+                                <!-- Active tasks will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Call Management Section -->
+            <section id="calls" class="content-section">
+                <div class="section-header">
+                    <h2>Call Management</h2>
+                    <button class="btn btn-primary" onclick="openNewCallModal()">
+                        <i class="fas fa-plus"></i>
+                        Log New Call
+                    </button>
+                </div>
+
+                <!-- Filters -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <input type="text" class="input" placeholder="Search calls..." id="call-search">
+                        <select class="select" id="call-status-filter">
+                            <option value="">All Status</option>
+                            <option value="new">New</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="resolved">Resolved</option>
+                            <option value="callback">Callback Required</option>
+                        </select>
+                        <select class="select" id="call-type-filter">
+                            <option value="">All Types</option>
+                            <option value="technical">Technical Support</option>
+                            <option value="new-connection">New Connection</option>
+                            <option value="billing">Billing</option>
+                            <option value="complaint">Complaint</option>
+                            <option value="speed">Internet Speed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Call List -->
+                <div class="card">
+                    <div class="card-content">
+                        <div class="table-container">
+                            <table class="table" id="call-table">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Customer</th>
+                                        <th>Phone</th>
+                                        <th>Type</th>
+                                        <th>Issue</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="call-table-body">
+                                    <!-- Call data will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Customers Section -->
+            <section id="customers" class="content-section">
+                <div class="section-header">
+                    <h2>Customer Database</h2>
+                    <button class="btn btn-primary" onclick="openNewCustomerModal()">
+                        <i class="fas fa-plus"></i>
+                        Add Customer
+                    </button>
+                </div>
+
+                <!-- Customer Filters -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <input type="text" class="input" placeholder="Search customers..." id="customer-search">
+                        <select class="select" id="service-type-filter">
+                            <option value="">All Services</option>
+                            <option value="broadband">Broadband</option>
+                            <option value="cable">Cable TV</option>
+                            <option value="wifi">WiFi</option>
+                            <option value="combo">Combo Package</option>
+                        </select>
+                        <select class="select" id="status-filter">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="suspended">Suspended</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Customer List -->
+                <div class="card">
+                    <div class="card-content">
+                        <div class="table-container">
+                            <table class="table" id="customer-table">
+                                <thead>
+                                    <tr>
+                                        <th>Customer ID</th>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                        <th>Service</th>
+                                        <th>Address</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customer-table-body">
+                                    <!-- Customer data will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tasks Section -->
+            <section id="tasks" class="content-section">
+                <div class="section-header">
+                    <h2>Task Management</h2>
+                    <button class="btn btn-primary" onclick="openNewTaskModal()">
+                        <i class="fas fa-plus"></i>
+                        Create Task
+                    </button>
+                </div>
+
+                <!-- Task Filters -->
+                <div class="filters">
+                    <div class="filter-group">
+                        <input type="text" class="input" placeholder="Search tasks..." id="task-search">
+                        <select class="select" id="task-priority-filter">
+                            <option value="">All Priorities</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                        <select class="select" id="task-status-filter">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                        <select class="select" id="assignee-filter">
+                            <option value="">All Assignees</option>
+                            <option value="john">John Smith</option>
+                            <option value="sarah">Sarah Johnson</option>
+                            <option value="mike">Mike Wilson</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Task List -->
+                <div class="card">
+                    <div class="card-content">
+                        <div class="task-list" id="task-list">
+                            <!-- Task items will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Assistant Section -->
+            <section id="ai" class="content-section">
+                <h2>AI Call Assistant</h2>
+                
+                <div class="ai-container">
+                    <div class="ai-chat" id="ai-chat">
+                        <div class="ai-welcome">
+                            <i class="fas fa-robot"></i>
+                            <h3>AI Assistant Ready</h3>
+                            <p>I'm here to help handle customer calls efficiently. I can assist with:</p>
+                            <ul>
+                                <li>Technical Support (Internet issues, WiFi problems)</li>
+                                <li>New Connection Requests</li>
+                                <li>Billing Inquiries</li>
+                                <li>Service Complaints</li>
+                                <li>Speed Optimization</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="ai-input">
+                        <div class="ai-scenarios">
+                            <h4>Try AI Scenarios:</h4>
+                            <div class="scenario-buttons">
+                                <button class="scenario-btn" onclick="simulateCall('technical')">
+                                    <i class="fas fa-wrench"></i>
+                                    Technical Support
+                                </button>
+                                <button class="scenario-btn" onclick="simulateCall('new-connection')">
+                                    <i class="fas fa-plug"></i>
+                                    New Connection
+                                </button>
+                                <button class="scenario-btn" onclick="simulateCall('billing')">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    Billing Issue
+                                </button>
+                                <button class="scenario-btn" onclick="simulateCall('complaint')">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Service Complaint
+                                </button>
+                                <button class="scenario-btn" onclick="simulateCall('speed')">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    Internet Speed
+                                </button>
+                            </div>
+                        </div>
+                        <div class="ai-controls">
+                            <button class="btn btn-success" onclick="startAICall()">
+                                <i class="fas fa-phone"></i>
+                                Start AI Call
+                            </button>
+                            <button class="btn btn-outline" onclick="clearChat()">
+                                <i class="fas fa-trash"></i>
+                                Clear Chat
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports" class="content-section">
+                <h2>Analytics & Reports</h2>
+                
+                <div class="content-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Call Volume by Type</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="chart-container">
+                                <canvas id="callTypeChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Response Time Trends</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="chart-container">
+                                <canvas id="responseTimeChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Summary Report</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="report-summary" id="report-summary">
+                            <!-- Report data will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <!-- New Call Modal -->
+    <div id="new-call-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Log New Call</h3>
+                <button class="modal-close" onclick="closeModal('new-call-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="new-call-form">
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <input type="text" class="input" name="customer_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" class="input" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Call Type</label>
+                        <select class="select" name="type" required>
+                            <option value="">Select Type</option>
+                            <option value="technical">Technical Support</option>
+                            <option value="new-connection">New Connection</option>
+                            <option value="billing">Billing</option>
+                            <option value="complaint">Complaint</option>
+                            <option value="speed">Internet Speed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Issue Description</label>
+                        <textarea class="textarea" name="issue" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select class="select" name="priority" required>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('new-call-modal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Call</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Task Modal -->
+    <div id="new-task-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Task</h3>
+                <button class="modal-close" onclick="closeModal('new-task-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="new-task-form">
+                    <div class="form-group">
+                        <label>Task Title</label>
+                        <input type="text" class="input" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="textarea" name="description" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Assign To</label>
+                        <select class="select" name="assignee" required>
+                            <option value="">Select Assignee</option>
+                            <option value="john">John Smith</option>
+                            <option value="sarah">Sarah Johnson</option>
+                            <option value="mike">Mike Wilson</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select class="select" name="priority" required>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Due Date</label>
+                        <input type="date" class="input" name="due_date" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('new-task-modal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Task</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
